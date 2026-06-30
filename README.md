@@ -2,7 +2,7 @@
 
 ![esp32c6](https://img.shields.io/badge/target-ESP32--C6-blue)
 
-一个 BLE 外设设备，当**已配对的手机靠近门**时驱动舵机开锁，仅使用 **BLE 扫描**——配对后不再重复连接。
+本项目基于ESPIDF的HID-Device示例改造，项目默认使用ESP32C6开发板，理论支持ESPIDF支持的所有开发板（有蓝牙功能的），当**已配对的蓝牙靠近**时驱动舵机开锁，仅使用 **BLE 扫描**而不连接，仅在第一次配对时需要连接目标设备，之后使用IRK地址解析记录目标RPA地址，使即使配对的目标设备蓝牙随机mac改变也能正确识别已配对设备并驱动舵机触发解锁。
 
 ## 工作原理
 
@@ -10,10 +10,9 @@
 
 1. 按下 **GPIO4** 上的按钮进入配对模式（60 秒超时）。
 2. 在手机蓝牙设置中连接到 "Proximity Unlock"。
-3. 在两侧确认配对码。
-4. 配对成功后，设备**断开连接**并进入**扫描模式**。
+3. 在手机上确认配对码。
+4. **配对成功后，手机需手动点击断开连接，之后才会正常触发逻辑**
 
-> 配对后不再建立任何连接，系统仅监听扫描结果。
 
 ### 开锁逻辑
 
@@ -41,7 +40,7 @@ BLE 扫描（持续，不启用重复过滤）
 
 | 组件 | 引脚 |
 |------|------|
-| 舵机（信号线） | 可通过 menuconfig 配置（默认取决于配置） |
+| 舵机（信号线） |默认为GPIO 2 |
 | 按钮（配对） | GPIO4（低电平有效，内部上拉） |
 
 ### 舵机动作
@@ -57,25 +56,12 @@ BLE 扫描（持续，不启用重复过滤）
 可配对多部手机。第一个靠近的已配对手机将触发开锁。开锁后，5 秒保持计时器开始运行——在此期间其他手机到达不会重复触发。
 
 
-# 设置环境（根据你的配置调整路径）
-set IDF_PATH=E:\esp\v6.0\esp-idf
-set IDF_TOOLS_PATH=C:\Users\<user>\.espressif
-set PATH=%IDF_TOOLS_PATH%\python_env\idf6.0_py3.11_env\Scripts;%PATH%
-
-cd e:\ESP-Project\esp_hid_device
-idf.py build
-idf.py -p COM<x> flash
-`
-
-查看监控输出：
-`ash
-idf.py -p COM<x> monitor
-`
+# 设置环境
+ESPIDF 6.0
 
 ## 配置
 
-运行 idf.py menuconfig → **Proximity Unlock Configuration**：
-- **Servo GPIO pin** — 更改舵机信号线连接的 GPIO
+在esp_hid_device_main.c中配置 SERVO_GPIO_PIN 来配置控制舵机的GPIO口
 
 ## 项目结构
 
@@ -85,7 +71,7 @@ main/
 ├── Kconfig.projbuild           — 菜单配置选项
 ├── esp_hid_device_main.c       — 核心逻辑：扫描、缓存、开锁
 ├── esp_hid_gap.c/.h            — BLE GAP 层（扫描、广播）
-├── servo_control.c/.h          — SG90 舵机 PWM 驱动
+├── servo_control.c/.h          —  舵机 PWM 驱动
 `
 
 ## 关键参数（在 main.c 中修改）
