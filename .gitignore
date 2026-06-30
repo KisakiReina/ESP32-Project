@@ -63,8 +63,10 @@ env/
 
 # Language Servers
 .clangd/
+.clangd
 .ccls-cache/
 compile_commands.json
+.cache/
 
 # Windows specific
 Thumbs.db
