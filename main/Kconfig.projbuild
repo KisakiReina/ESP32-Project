@@ -1,0 +1,39 @@
+menu "Proximity Unlock Configuration"
+
+    config EXAMPLE_RSSI_NEAR
+        int "RSSI Near Threshold (dBm)"
+        default -55
+        range -100 0
+        help
+            RSSI threshold for "device near" detection.
+            When RSSI > this value (e.g., -55 dBm ≈ 1 meter), the device
+            is considered close enough to trigger unlock.
+            Higher values (closer to 0) = shorter range.
+
+    config EXAMPLE_RSSI_FAR
+        int "RSSI Far Threshold (dBm)"
+        default -70
+        range -100 0
+        help
+            RSSI threshold for "device far" detection.
+            When RSSI < this value (e.g., -70 dBm ≈ 3 meters), the device
+            is considered far enough to trigger lock.
+            This should be lower than RSSI_NEAR to provide hysteresis.
+
+    config EXAMPLE_NEAR_CONFIRM_MS
+        int "Near confirmation time (ms)"
+        default 1000
+        range 200 10000
+        help
+            How long the device must remain within near range before
+            the servo unlocks (anti-jitter debounce).
+
+    config EXAMPLE_FAR_CONFIRM_MS
+        int "Far confirmation time (ms)"
+        default 3000
+        range 500 30000
+        help
+            How long the device must remain outside far range before
+            the servo locks (anti-jitter debounce).
+
+endmenu
