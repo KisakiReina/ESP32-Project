@@ -56,9 +56,7 @@ BLE 扫描（持续，不启用重复过滤）
 
 可配对多部手机。第一个靠近的已配对手机将触发开锁。开锁后，5 秒保持计时器开始运行——在此期间其他手机到达不会重复触发。
 
-## 编译与烧录
 
-`ash
 # 设置环境（根据你的配置调整路径）
 set IDF_PATH=E:\esp\v6.0\esp-idf
 set IDF_TOOLS_PATH=C:\Users\<user>\.espressif
