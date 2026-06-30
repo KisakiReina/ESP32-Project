@@ -48,7 +48,7 @@ BLE 扫描（持续，不启用重复过滤）
 | 动作 | 旋转角度 |\
 |------|----------|\
 | 锁定（初始位置） | 180° |\
-| 开锁 | 180° → 30° |\
+| 开锁 | 180° → 30° |
 
 
 ### 多用户支持
@@ -66,12 +66,12 @@ ESPIDF 6.0
 ## 项目结构
 
 `
-main/  
-├── CMakeLists.txt              — 构建配置  
-├── Kconfig.projbuild           — 菜单配置选项  
-├── esp_hid_device_main.c       — 核心逻辑：扫描、缓存、开锁  
-├── esp_hid_gap.c/.h            — BLE GAP 层（扫描、广播）  
-├── servo_control.c/.h          —  舵机 PWM 驱动  
+main/
+├── CMakeLists.txt              — 构建配置  \
+├── Kconfig.projbuild           — 菜单配置选项  \
+├── esp_hid_device_main.c       — 核心逻辑：扫描、缓存、开锁  \
+├── esp_hid_gap.c/.h            — BLE GAP 层（扫描、广播）  \
+├── servo_control.c/.h          —  舵机 PWM 驱动  \
 `
 
 ## 关键参数（在 main.c 中修改）
@@ -84,4 +84,4 @@ main/
 | SCAN_GRACE_PERIOD_US | 10000000 | 扫描开始后的观察窗口（10 秒） |\
 | SERVO_ANGLE_UNLOCK | 30 | 开锁时舵机角度（度） |\
 | SERVO_ANGLE_LOCK | 180 | 锁定时舵机角度（度） |\
-| SERVO_MOVE_TIME_MS | 800 | 舵机旋转时间（毫秒） |\
+| SERVO_MOVE_TIME_MS | 800 | 舵机旋转时间（毫秒） |
